@@ -1,0 +1,84 @@
+#include<bits/stdc++.h>
+#define fi first
+#define se second
+#define ll long long
+#define pb push_back
+#define mp make_pair
+#define mset memset
+#define en cout<<"\n"
+#define ull unsigned long long
+#define all(x) x.begin(),x.end()
+#define ld long double
+#define FE freopen
+#define in stdin
+#define out stdout
+#define fod(i,l,r) for(int i=l;i<=r;i++)
+#define fov(i,l,r) for(int i=l;i>=r;i--)
+
+using namespace std;
+
+template<typename T1, typename T2> bool mini(T1 &a, T2 b) {if(a>b) a=b; else return 0; return 1;}
+template<typename T1, typename T2> bool maxi(T1 &a, T2 b) {if(a<b) a=b; else return 0; return 1;}
+
+int const N=2e5+7;
+int const MAX=1e9+696969;
+int const Mod=1e9+7;
+int const base=31;
+int const nbit = 60;
+ll const oo=1e18+696969;
+
+typedef pair<int , int > ii;
+typedef vector<ii> Vii;
+
+ll n , k;
+int bit[N];
+
+void open(){
+	FE("binary.inp" , "r", in);
+	FE("binary.out" , "w",out);
+}
+
+ll solve(ll n , int k){
+    ll tmp = n;
+    // phân tích số n ra hệ nhị phân
+    for(int i =0 ;i < nbit;i++){
+        bit[i] = tmp % 2;
+        tmp /= 2;
+    }
+    //nếu n có sẵn k bit liên tiếp thì trả về n
+    for(int i = 0 ;i <= nbit - k ;i++){
+        bool kt = true;
+        for(int j = 0 ;j < k ;j++)
+            if(bit[i + j] == 0) kt = false;
+        if (kt) return n;
+    }
+    int last = 0; // đếm số bit liên tiếp trong 60 - k bit cuối cùng
+    for(int i = k;i < nbit;i++){
+        if(bit[i] == 1) last ++ ;
+        else break;
+    }
+    //gán k bit nhỏ nhất
+    for(int i = 0;i < last;i++) bit[i] = 0;
+    for(int i = last;i < k;i++) bit[i] = 1;
+    // xây dựng kết quả dựa vào cac bit
+    ll res = 0;
+    for(int i = nbit - 1;i >= 0 ;i--)
+        res = res * 2 + bit[i];
+    return res;
+}
+
+void proc(){
+    cin >> n >> k;
+    cout << solve(n , k);
+}
+
+int main(){
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);cout.tie(0);
+	open();
+	int tc;
+	//cin >> tc;
+	tc = 1;
+	while(tc--) proc();
+}
+
